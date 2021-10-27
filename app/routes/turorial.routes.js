@@ -1,28 +1,28 @@
 module.exports = app => {
-    const tutorials = require("../controllers/tutorial.controller.js");
+    const datasets = require("../controllers/userdatareg.controller.js");
 
     var router = require("express").Router();
 
-    // Create a new Tutorial
-    router.post("/", tutorials.create);
+    // Create a new Dataset
+    router.post("/", datasets.create);
 
-    // Retrieve all Tutorials
-    router.get("/", tutorials.findAll);
+    // Retrieve all Datasets
+    router.get("/", datasets.findAll);
 
-    // Retrieve all published Tutorials
-    router.get("/published", tutorials.findAllPublished);
+    // Retrieve all published datasets
+    router.get("/published", datasets.findAllPublished);
 
-    // Retrieve a single Tutorial with id
-    router.get("/:id", tutorials.findOne);
+    // Retrieve a single dataset with username
+    router.get("/:id", datasets.findOne);
 
-    // Update a Tutorial with id
-    router.put("/:id", tutorials.update);
+    // Update a dataset with username
+    router.put("/:id", datasets.update);
 
-    // Delete a Tutorial with id
-    router.delete("/:id", tutorials.delete);
+    // Delete a dataset with datasetid
+    router.delete("/:datasetid", datasets.delete);
 
-    // Delete all Tutorials
-    router.delete("/", tutorials.deleteAll);
+    // Delete all Datasets
+    router.delete("/", datasets.deleteAll);
 
-    app.use('/api/tutorials', router);
+    app.use('/api/datasets', router);
 };
