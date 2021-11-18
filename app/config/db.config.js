@@ -1,8 +1,8 @@
 module.exports = {
-  HOST: "dig-bio-index.cxrzznxifeib.us-east-1.rds.amazonaws.com",
-  USER: "diguser",
-  PASSWORD: "type2diabetes",
-  DB: "Dataregistry",
+  HOST: "xxx.amazonaws.com",
+  USER: "xx",
+  PASSWORD: "xx",
+  DB: "xx",
   dialect: "mysql",
   pool: {
     max: 100,
