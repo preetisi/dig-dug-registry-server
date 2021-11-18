@@ -8,7 +8,7 @@ exports.create = (req, res) => {
     if (!req.body.username) {
         res.status(400).send({
 
-            message: "Post Content can not be empty!"
+            message: "Post Content - username- can not be empty!"
         });
         return;
     }
@@ -43,11 +43,12 @@ exports.create = (req, res) => {
 // Retrieve all Datasets from the database.
 exports.findAll = (req, res) => {
     const username = req.query.username;
-    var condition = username ? { username: { [Op.like]: `%${username}%` } } : null;
+    console.log("username", username)
+    var condition = username ? { username: { [Op.eq]: `${username}` } } : null;
 
     UserDataReg.findAll({ where: condition })
         .then(data => {
-            res.send(data);
+            res.send(data)
         })
         .catch(err => {
             res.status(500).send({
@@ -56,6 +57,23 @@ exports.findAll = (req, res) => {
             });
         });
 
+};
+
+// Find all Datasets for a given user
+exports.findAllDatasetsPerUser = (req, res) => {
+    const username = req.query.username;
+    var condition = username ? { username: { [Op.eq]: `%${username}%` } } : null;
+
+    UserDataReg.findAll({ where: condition })
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || `Some error occurred while retrieving Datasets for user=${username}.`
+            });
+        });
 };
 
 // Find a single Dataset with an id
@@ -79,21 +97,23 @@ exports.findOne = (req, res) => {
         });
 };
 
-// Update a Dataset by the id in the request
+// Update a Dataset by the datasetid in the request
 exports.update = (req, res) => {
-    const id = req.params.id;
+    const id = req.params.datasetid;
 
     UserDataReg.update(req.body, {
         where: { id: id }
     })
         .then(num => {
+
             if (num == 1) {
                 res.send({
                     message: "Dataset was updated successfully."
                 });
             } else {
+
                 res.send({
-                    message: `Cannot update Dataset with id=${id}. Maybe Dataset was not found or req.body is empty!`
+                    message: `Cannot update Dataset with id=${id},. Maybe Dataset was not found or req.body is empty!`
                 });
             }
         })
@@ -104,7 +124,7 @@ exports.update = (req, res) => {
         });
 };
 
-// Delete a Tutorial with the specified id in the request
+// Delete a Dataset with the specified id in the request
 exports.delete = (req, res) => {
     const id = req.params.datasetid;
 
@@ -159,3 +179,5 @@ exports.findAllPublished = (req, res) => {
             });
         });
 };
+
+
