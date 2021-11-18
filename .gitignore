@@ -1,5 +1,6 @@
 .DS_Store
 node_modules
+/Users/psingh/broadProjects/nodejs-express-sequelize-mysql/app/config/db.config.js
 /config
 /dist
 /Users/psingh/broadProjects/vue-js-client-crud/node_modules
