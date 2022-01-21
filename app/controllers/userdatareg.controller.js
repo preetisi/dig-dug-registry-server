@@ -39,9 +39,9 @@ exports.create = (req, res) => {
 
 // Retrieve all Datasets from the database.
 exports.findAll = (req, res) => {
-    const username = req.query.username;
-    console.log("username", username)
-    var condition = username ? { username: { [Op.eq]: `${username}` } } : null;
+    const dataset_id = req.query.dataset_id;
+    console.log("dataset id", dataset_id)
+    var condition = dataset_id ? { dataset_id: { [Op.eq]: `${dataset_id}` } } : null;
 
     UserDataReg.findAll({ where: condition })
         .then(data => {
@@ -57,9 +57,9 @@ exports.findAll = (req, res) => {
 };
 
 // Find all Datasets for a given user
-exports.findAllDatasetsPerUser = (req, res) => {
-    const username = req.query.username;
-    var condition = username ? { username: { [Op.eq]: `%${username}%` } } : null;
+exports.findAllDatasetsPerDatasetid = (req, res) => {
+    const dataset_id = req.query.dataset_id;
+    var condition = dataset_id ? { dataset_id: { [Op.eq]: `%${dataset_id}%` } } : null;
 
     UserDataReg.findAll({ where: condition })
         .then(data => {
@@ -68,7 +68,7 @@ exports.findAllDatasetsPerUser = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || `Some error occurred while retrieving Datasets for user=${username}.`
+                    err.message || `Some error occurred while retrieving Datasets for dataset_id=${dataset_id}.`
             });
         });
 };
@@ -77,13 +77,13 @@ exports.findAllDatasetsPerUser = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.dataset_id;
 
-    UserDataReg.findByPk(id)
+    UserDataReg.findAll(id)
         .then(data => {
             if (data) {
                 res.send(data);
             } else {
                 res.status(404).send({
-                    message: `Cannot find Dataset with id=${id}.`
+                    message: `Cannot find Dataset with datasetid=${id}.`
                 });
             }
         })
