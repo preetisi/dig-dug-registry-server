@@ -4,34 +4,15 @@ module.exports = (sequelize, Sequelize) => {
         username: {
             type: Sequelize.STRING
         },
-        password: {
+        dataset_id: {
             type: Sequelize.STRING
         },
-        role: {
-            type: Sequelize.STRING
-        },
-        published: {
-            type: Sequelize.BOOLEAN
-        },
-        datasetid: {
-            type: Sequelize.STRING
-        },
-        description: {
-            type: Sequelize.STRING
-        },
+
         status: {
             type: Sequelize.STRING
         },
-        whereFrom: {
-            type: Sequelize.STRING
-        },
-        urgency: {
-            type: Sequelize.STRING
-        },
-        summary: {
-            type: Sequelize.STRING
-        },
-    });
 
+
+    });
     return UserDataReg;
 };

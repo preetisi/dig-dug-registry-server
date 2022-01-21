@@ -16,15 +16,12 @@ exports.create = (req, res) => {
     // Create a Dataset for a user
     const userdataset = {
         username: req.body.username,
-        password: req.body.password,
-        role: req.body.role,
-        published: req.body.published ? req.body.published : false,
-        datasetid: req.body.datasetid,
-        description: req.body.description,
+
+
+        dataset_id: req.body.dataset_id,
+
         status: req.body.status,
-        whereFrom: req.body.whereFrom,
-        urgency: req.body.urgency,
-        summary: req.body.summary
+
     };
 
     // Save user dataset in the database
@@ -78,7 +75,7 @@ exports.findAllDatasetsPerUser = (req, res) => {
 
 // Find a single Dataset with an id
 exports.findOne = (req, res) => {
-    const id = req.params.id;
+    const id = req.params.dataset_id;
 
     UserDataReg.findByPk(id)
         .then(data => {
@@ -99,7 +96,7 @@ exports.findOne = (req, res) => {
 
 // Update a Dataset by the datasetid in the request
 exports.update = (req, res) => {
-    const id = req.params.datasetid;
+    const id = req.params.dataset_id;
 
     UserDataReg.update(req.body, {
         where: { id: id }
@@ -126,7 +123,7 @@ exports.update = (req, res) => {
 
 // Delete a Dataset with the specified id in the request
 exports.delete = (req, res) => {
-    const id = req.params.datasetid;
+    const id = req.params.dataset_id;
 
     UserDataReg.destroy({
         where: { id: id }
