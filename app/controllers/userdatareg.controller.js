@@ -16,11 +16,10 @@ exports.create = (req, res) => {
     // Create a Dataset for a user
     const userdataset = {
         username: req.body.username,
-
-
         dataset_id: req.body.dataset_id,
-
         status: req.body.status,
+        datasetname: req.body.datasetname,
+        Origin: req.body.Origin,
 
     };
 
@@ -77,7 +76,7 @@ exports.findAllDatasetsPerDatasetid = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.dataset_id;
 
-    UserDataReg.findAll(id)
+    UserDataReg.findByPk(id)
         .then(data => {
             if (data) {
                 res.send(data);
