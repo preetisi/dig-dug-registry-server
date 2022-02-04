@@ -1,30 +1,34 @@
 const db = require("../models");
-const UserDataReg = db.userdataregs;
+const RegisteredDataset = db.registreddataset;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Dataset
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.username) {
+    if (!req.body.emailid) {
         res.status(400).send({
 
-            message: "Post Content - username- can not be empty!"
+            message: "Post Content - email id - can not be empty!"
         });
         return;
     }
 
     // Create a Dataset for a user
     const userdataset = {
-        username: req.body.username,
-        dataset_id: req.body.dataset_id,
-        status: req.body.status,
-        datasetname: req.body.datasetname,
-        Origin: req.body.Origin,
-
+        emailid: req.body.emailid,
+        publication: req.body.publication,
+        phenotype: req.body.phenotype,
+        ancestry: req.body.ancestry,
+        technology: req.body.technology,
+        dichotomous: req.body.dichotomous ? req.body.dichotomous : false,
+        continuous: req.body.continuous ? req.body.continuous : false,
+        case: req.body.case,
+        control: req.body.control,
+        samplesize: req.body.samplesize
     };
 
     // Save user dataset in the database
-    UserDataReg.create(userdataset)
+    RegisteredDataset.create(userdataset)
         .then(data => {
             res.send(data);
         })
@@ -36,13 +40,13 @@ exports.create = (req, res) => {
         });
 };
 
-// Retrieve all Datasets from the database.
+// Retrieve all Datasets from the database based on email id.
 exports.findAll = (req, res) => {
-    const dataset_id = req.query.dataset_id;
-    console.log("dataset id", dataset_id)
-    var condition = dataset_id ? { dataset_id: { [Op.eq]: `${dataset_id}` } } : null;
+    const emailid = req.query.emailid;
+    console.log("email id", emailid)
+    var condition = emailid ? { emailid: { [Op.eq]: `${emailid}` } } : null;
 
-    UserDataReg.findAll({ where: condition })
+    RegisteredDataset.findAll({ where: condition })
         .then(data => {
             res.send(data)
         })
@@ -55,33 +59,33 @@ exports.findAll = (req, res) => {
 };
 
 // Find all Datasets for a given user
-exports.findAllDatasetsPerDatasetid = (req, res) => {
-    const dataset_id = req.query.dataset_id;
-    var condition = dataset_id ? { dataset_id: { [Op.eq]: `%${dataset_id}%` } } : null;
+// exports.findAllDatasetsemailid = (req, res) => {
+//     const dataset_id = req.query.dataset_id;
+//     var condition = dataset_id ? { dataset_id: { [Op.eq]: `%${dataset_id}%` } } : null;
 
-    UserDataReg.findAll({ where: condition })
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || `Some error occurred while retrieving Datasets for dataset_id=${dataset_id}.`
-            });
-        });
-};
+//     UserDataReg.findAll({ where: condition })
+//         .then(data => {
+//             res.send(data);
+//         })
+//         .catch(err => {
+//             res.status(500).send({
+//                 message:
+//                     err.message || `Some error occurred while retrieving Datasets for dataset_id=${dataset_id}.`
+//             });
+//         });
+// };
 
 // Find a single Dataset with an id
 exports.findOne = (req, res) => {
-    const id = req.params.dataset_id;
+    const trackingid = req.params.id;
 
-    UserDataReg.findByPk(id)
+    RegisteredDataset.findByPk(trackingid)
         .then(data => {
             if (data) {
                 res.send(data);
             } else {
                 res.status(404).send({
-                    message: `Cannot find Dataset with datasetid=${id}.`
+                    message: `Cannot find Dataset with trackingid=${trackingid}.`
                 });
             }
         })
@@ -94,10 +98,10 @@ exports.findOne = (req, res) => {
 
 // Update a Dataset by the datasetid in the request
 exports.update = (req, res) => {
-    const id = req.params.dataset_id;
+    const trackingid = req.params.id;
 
-    UserDataReg.update(req.body, {
-        where: { id: id }
+    RegisteredDataset.update(req.body, {
+        where: { id: trackingid }
     })
         .then(num => {
 
@@ -108,7 +112,7 @@ exports.update = (req, res) => {
             } else {
 
                 res.send({
-                    message: `Cannot update Dataset with id=${id},. Maybe Dataset was not found or req.body is empty!`
+                    message: `Cannot update Dataset with id=${trackingid},. Maybe Dataset was not found or req.body is empty!`
                 });
             }
         })
@@ -121,10 +125,10 @@ exports.update = (req, res) => {
 
 // Delete a Dataset with the specified id in the request
 exports.delete = (req, res) => {
-    const id = req.params.dataset_id;
+    const trackingid = req.params.id;
 
-    UserDataReg.destroy({
-        where: { id: id }
+    RegisteredDataset.destroy({
+        where: { id: trackingid }
     })
         .then(num => {
             if (num == 1) {
@@ -133,20 +137,20 @@ exports.delete = (req, res) => {
                 });
             } else {
                 res.send({
-                    message: `Cannot delete Dataset with id=${id}. Maybe Tutorial was not found!`
+                    message: `Cannot delete Dataset with id=${trackingid}. Maybe Tutorial was not found!`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Could not delete Dataset with id=" + id
+                message: "Could not delete Dataset with id=" + trackingid
             });
         });
 };
 
 // Delete all Datasets from the database.
 exports.deleteAll = (req, res) => {
-    UserDataReg.destroy({
+    RegisteredDataset.destroy({
         where: {},
         truncate: false
     })
@@ -161,18 +165,18 @@ exports.deleteAll = (req, res) => {
         });
 };
 
-// Find all published Datasets
-exports.findAllPublished = (req, res) => {
-    UserDataReg.findAll({ where: { published: true } })
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while retrieving Datasets."
-            });
-        });
-};
+// // Find all published Datasets
+// exports.findAllPublished = (req, res) => {
+//     RegisteredDataset.findAll({ where: { published: true } })
+//         .then(data => {
+//             res.send(data);
+//         })
+//         .catch(err => {
+//             res.status(500).send({
+//                 message:
+//                     err.message || "Some error occurred while retrieving Datasets."
+//             });
+//         });
+// };
 
 
