@@ -35,6 +35,7 @@ app.get("/", (req, res) => {
 // require("./app/routes/turorial.routes")(app);
 require("./app/routes/datasetreg.routes")(app);
 require("./app/routes/registreddataset.routes")(app);
+require("./app/routes/registreduser.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

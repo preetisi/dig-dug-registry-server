@@ -1,5 +1,5 @@
 const db = require("../models");
-const RegisteredDataset = db.registreddataset;
+const Registereduser = db.registreduser;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Dataset
@@ -16,19 +16,12 @@ exports.create = (req, res) => {
     // Create a Dataset for a user
     const userdataset = {
         emailid: req.body.emailid,
-        publication: req.body.publication,
-        phenotype: req.body.phenotype,
-        ancestry: req.body.ancestry,
-        technology: req.body.technology,
-        dichotomous: req.body.dichotomous ? req.body.dichotomous : false,
-        continuous: req.body.continuous ? req.body.continuous : false,
-        case: req.body.case,
-        control: req.body.control,
-        samplesize: req.body.samplesize
+        password: req.body.password,
+        instituition: req.body.instituition,
     };
 
     // Save user dataset in the database
-    RegisteredDataset.create(userdataset)
+    Registereduser.create(userdataset)
         .then(data => {
             res.send(data);
         })
@@ -46,7 +39,7 @@ exports.findAll = (req, res) => {
     console.log("email id", emailid)
     var condition = emailid ? { emailid: { [Op.eq]: `${emailid}` } } : null;
 
-    RegisteredDataset.findAll({ where: condition })
+    Registereduser.findAll({ where: condition })
         .then(data => {
             res.send(data)
         })
@@ -63,7 +56,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const trackingid = req.params.id;
 
-    RegisteredDataset.findByPk(trackingid)
+    Registereduser.findByPk(trackingid)
         .then(data => {
             if (data) {
                 res.send(data);
@@ -84,7 +77,7 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
     const trackingid = req.params.id;
 
-    RegisteredDataset.update(req.body, {
+    Registereduser.update(req.body, {
         where: { id: trackingid }
     })
         .then(num => {
@@ -111,7 +104,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     const trackingid = req.params.id;
 
-    RegisteredDataset.destroy({
+    Registereduser.destroy({
         where: { id: trackingid }
     })
         .then(num => {
@@ -134,7 +127,7 @@ exports.delete = (req, res) => {
 
 // Delete all Datasets from the database.
 exports.deleteAll = (req, res) => {
-    RegisteredDataset.destroy({
+    Registereduser.destroy({
         where: {},
         truncate: false
     })

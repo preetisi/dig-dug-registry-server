@@ -19,8 +19,9 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.tutorials = require("./tutorial.model.js")(sequelize, Sequelize);
-db.userdataregs = require("./userdatareg.model.js")(sequelize, Sequelize);
+// db.tutorials = require("./tutorial.model.js")(sequelize, Sequelize);
+// db.userdataregs = require("./userdatareg.model.js")(sequelize, Sequelize);
 db.registreddataset = require("./registreddataset.model.js")(sequelize, Sequelize);
-db.userprofiles = require("./userprofile.model.js")(sequelize, Sequelize);
+db.registreduser = require("./registreduser.model.js")(sequelize, Sequelize);
+
 module.exports = db;
