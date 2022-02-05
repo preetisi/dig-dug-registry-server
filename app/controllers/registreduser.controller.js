@@ -7,21 +7,21 @@ exports.create = (req, res) => {
     // Validate request
     if (!req.body.emailid) {
         res.status(400).send({
-
             message: "Post Content - email id - can not be empty!"
         });
         return;
     }
 
     // Create a Dataset for a user
-    const userdataset = {
+    const userdetails = {
         emailid: req.body.emailid,
         password: req.body.password,
         instituition: req.body.instituition,
+        role: req.body.role
     };
 
     // Save user dataset in the database
-    Registereduser.create(userdataset)
+    Registereduser.create(userdetails)
         .then(data => {
             res.send(data);
         })
